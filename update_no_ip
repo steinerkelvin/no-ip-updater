@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # coding: UTF-8
 
-
 import sys
-
-import noip
+import no_ip_updater as noip
 
 
 # Usuário e senha, e hosts padrões
-# Sete apenas "username" e "hosts" para passar a senha ao rodar o programa
+# Se não forem definidos aqui, serão passados ao rodar o programa
 username = None  # "username"
 password = None  # "password"
 hosts = None     # ["hostname.no-ip.org", "otherhost.servegame.com"]
@@ -16,7 +14,7 @@ hosts = None     # ["hostname.no-ip.org", "otherhost.servegame.com"]
 
 # Detecta o ip atual
 try:
-	import getip
+	import no_ip_updater.getip as getip
 	ip = getip.get_ip()
 except:
 	ip = None 
@@ -94,7 +92,7 @@ def run(args=sys.argv[1:]):
 	
 if __name__ == "__main__":
 	run(sys.argv[1:])
-else:
-	print "This file is not to be imported"
+#else:
+	#print "This file is not to be imported"
 
 

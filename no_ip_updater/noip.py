@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: UTF-8
 
-
 import sys
 import base64
 import urllib2
@@ -11,9 +10,13 @@ import urllib2
 urlbase = "http://dynupdate.no-ip.com/nic/update?hostname={2}&myip={3}"
 
 
-# Atualiza um host
+
 def update(username, password, host, ip):
-	# Foramta a URL
+	"""
+	Atualiza um host
+	"""
+	
+	# Formata a URL
 	url = urlbase.format(username, password, host, ip)
 	
 	# HTTP Request
@@ -47,8 +50,10 @@ messages = {
 		"911":     "[ERROR] Um erro fatal aconteceu."
 		}
 
-# Retorna uma mensagem de acordo com a resposta obtida do no-ip
 def get_response(response):
+	"""
+	Retorna uma mensagem de acordo com a resposta obtida do No-IP
+	"""
 	for m in range(len(messages.keys())):
 		key = messages.keys()[m]
 		message = messages[key]
@@ -56,9 +61,10 @@ def get_response(response):
 			return message
 
 
-# Atualiza um ou mais hosts, printando as mensagens
 def updateHosts(username, password, ip, hosts):
-	
+	"""
+	Atualiza um ou mais hosts, printando as mensagens de resposta
+	"""
 	# Se hosts for lista ou tupla
 	if type(hosts) in (list, tuple):
 		# Printa o IP

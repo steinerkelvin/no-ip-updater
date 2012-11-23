@@ -19,7 +19,7 @@ Usage
 ### Command line ###
 To update from command line:
 
-	$ python update_no_ip -u user -p pass -host ahost otherhost -ip myip
+	$ update-no-ip -u user -p pass -host ahost otherhost -ip myip
 	
 You can define in the script, a default user name, host, and even a password (not recommended).
 If not defined, the password will be prompted.

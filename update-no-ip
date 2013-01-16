@@ -21,11 +21,11 @@ except:
 
 
 
-def run(args=sys.argv[1:]):
+def run():
 	import argparse
 	import getpass
 	
-	parser = argparse.ArgumentParser(description="Atualiza hosts no-ip")
+	parser = argparse.ArgumentParser(description="Update hosts No-IP")
 	add_arg = parser.add_argument
 	add_arg("-u", "--username", action="store", dest="user",     type=str, help="No-IP username")
 	add_arg("-p", "--password", action="store", dest="password", type=str, help="password to username")
@@ -91,7 +91,7 @@ def run(args=sys.argv[1:]):
 	
 	
 if __name__ == "__main__":
-	run(sys.argv[1:])
+	run()
 #else:
 	#print "This file is not to be imported"
 

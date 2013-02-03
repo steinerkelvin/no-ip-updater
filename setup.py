@@ -1,7 +1,11 @@
 from distutils.core import setup
 
-#datafiles = [ ('/usr/bin/', ['update-no-ip']) ]
-datafiles=[ ('.', ['update-no-ip']) ]
+import os
+
+if os.name == "posix":
+	datafiles = [ ('/usr/bin/', ['update-no-ip']) ]
+else:
+	datafiles=[ ('.', ['update-no-ip']) ]
 
 setup(name='no-ip-updater',
 	  version='1.0',

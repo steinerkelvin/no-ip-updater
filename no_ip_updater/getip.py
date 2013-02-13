@@ -1,30 +1,62 @@
 #!/usr/bin/env python
 # coding: UTF-8
 
+
+''' 
+	no_ip_updater.getip
+	===================
+	
+	Implements several APIs that let you see the public IP of your computer.
+	
+'''
+
+__author__ = "Kelvin Steiner"
+__email__ = "kelvinsteinersantos@gmail.com"
+
+
 import urllib2
 import re
 
+
+IP_REGEX = r'[0-9]+(?:\.[0-9]+){3}'
+
+
 whatismyip_url = "http://automation.whatismyip.com/n09230945.asp"
 dyndns_url = "http://checkip.dyndns.org/"
+icanhazip_url = "http://icanhazip.com/"
+
 
 def whatismyip_get_ip():
 	"""
-	Retorna o IP externo atual, usando whatismyip
+	Uses whatismyip API. 
+	( NO LONGER WORKS )
 	"""
-	ip = urllib2.urlopen(whatismyip_url).read()#.readlines()[0]
+	ip = urllib2.urlopen( whatismyip_url ).read()#.readlines()[0]
 	return ip
 	
 def dyndns_get_ip():
 	"""
-	Retorna o IP externo atual
+	Uses dyndns API.
 	"""
-	text = urllib2.urlopen(dyndns_url).read()#.readlines()[0]
+	text = urllib2.urlopen( dyndns_url ).read()#.readlines()[0]
 	
-	#ip = re.findall( r'[0-9]+(?:\.[0-9]+){3}', text )
-	ip = re.search( r'[0-9]+(?:\.[0-9]+){3}', text ).group()
+	ip = re.search( IP_REGEX , text ).group()
 	
 	return ip
 	
+def icanhazip_get_ip():
+	"""
+	Uses icanhazip API.
+	"""
+	text = urllib2.urlopen( icanhazip_url ).read()#.readlines()[0]
+	
+	ip = re.search( IP_REGEX , text ).group()
+	return ip
+	
+	
 def get_ip():
+	'''
+	Returns the current public IP.
+	'''
 	return dyndns_get_ip()
 

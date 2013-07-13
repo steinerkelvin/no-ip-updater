@@ -5,19 +5,24 @@ import sys
 import base64
 import urllib2
 
+import logging
 
 # URL a ser formatada
 urlbase = "http://dynupdate.no-ip.com/nic/update?hostname={2}&myip={3}"
+urlbase_https = "https://dynupdate.no-ip.com/nic/update?hostname={2}&myip={3}"
 
 
 
-def update(username, password, host, ip):
+def update(username, password, host, ip, https=True):
 	"""
 	Atualiza um host
 	"""
 	
 	# Formata a URL
-	url = urlbase.format(username, password, host, ip)
+	if https:
+		url = urlbase_https.format(username, password, host, ip)
+	else:
+		url = urlbase.format(username, password, host, ip)
 	
 	# HTTP Request
 	
@@ -29,8 +34,7 @@ def update(username, password, host, ip):
 	try:
 		res = urllib2.urlopen(req)
 	except urllib2.HTTPError:
-		#sprint "\nerro: ",
-		print "authentication error"
+		logging.error( " authentication error" )
 		exit(2)
 	
 	# Retorna a respota
@@ -61,7 +65,7 @@ def get_response(response):
 			return message
 
 
-def updateHosts(username, password, ip, hosts):
+def updateHosts(username, password, ip, hosts, https=True):
 	"""
 	Atualiza um ou mais hosts, printando as mensagens de resposta
 	"""
@@ -74,7 +78,7 @@ def updateHosts(username, password, ip, hosts):
 			# Printa o nome do host
 			print "\nhost: {}".format(host)
 			# Atualiza e printa a informação correspondente a resposta recebida
-			resp = update(username, password, host, ip)
+			resp = update(username, password, host, ip, https )
 			print get_response(resp)
 	
 	# Se hosts for string
@@ -84,7 +88,7 @@ def updateHosts(username, password, ip, hosts):
 		# Printa o nome do host
 		print "host: {}".format(hosts)
 		# Atualiza e printa a informação correspondente a resposta recebida
-		resp = update(username, password, hosts, ip)
+		resp = update(username, password, hosts, ip, https )
 		print get_response(resp)
 
 

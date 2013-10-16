@@ -7,7 +7,7 @@ import urllib2
 
 import logging
 
-# URL a ser formatada
+
 urlbase = "http://dynupdate.no-ip.com/nic/update?hostname={2}&myip={3}"
 urlbase_https = "https://dynupdate.no-ip.com/nic/update?hostname={2}&myip={3}"
 
@@ -15,10 +15,10 @@ urlbase_https = "https://dynupdate.no-ip.com/nic/update?hostname={2}&myip={3}"
 
 def update(username, password, host, ip, https=True):
 	"""
-	Atualiza um host
+	Update one host
 	"""
 	
-	# Formata a URL
+	# Format the URL
 	if https:
 		url = urlbase_https.format(username, password, host, ip)
 	else:
@@ -37,11 +37,11 @@ def update(username, password, host, ip, https=True):
 		logging.error( " authentication error" )
 		exit(2)
 	
-	# Retorna a respota
+	# Returns the server response
 	return res.read()
 
 
-# Mensagems exibidas para as respostas do No-IP
+# Messages displayed according to the No-IP server response
 messages = {
 		"good":    "[SUCESS] Host atualizado com sucesso.",
 		"nochg":   "[SUCESS] O Host já está atualizado.",
@@ -56,7 +56,7 @@ messages = {
 
 def get_response(response):
 	"""
-	Retorna uma mensagem de acordo com a resposta obtida do No-IP
+	Return a message according to the No-IP response
 	"""
 	for m in range(len(messages.keys())):
 		key = messages.keys()[m]
@@ -67,27 +67,21 @@ def get_response(response):
 
 def updateHosts(username, password, ip, hosts, https=True):
 	"""
-	Atualiza um ou mais hosts, printando as mensagens de resposta
+	Updates one or more hosts, printing corresponding messages.
 	"""
-	# Se hosts for lista ou tupla
+	
+	print "ip: {}".format(ip)
+	
+	# If multiple hosts
 	if type(hosts) in (list, tuple):
-		# Printa o IP
-		print "ip: {}".format(ip)
-		# Para cada host
 		for host in hosts:
-			# Printa o nome do host
 			print "\nhost: {}".format(host)
-			# Atualiza e printa a informação correspondente a resposta recebida
 			resp = update(username, password, host, ip, https )
 			print get_response(resp)
 	
-	# Se hosts for string
+	# If one host
 	elif type(hosts) == str:
-		# Printa o IP
-		print "ip: {}".format(ip)
-		# Printa o nome do host
 		print "host: {}".format(hosts)
-		# Atualiza e printa a informação correspondente a resposta recebida
 		resp = update(username, password, hosts, ip, https )
 		print get_response(resp)
 

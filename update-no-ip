@@ -5,19 +5,12 @@ import sys
 import no_ip_updater as noip
 
 
-# Usuário e senha, e hosts padrões
-# Se não forem definidos aqui, serão passados ao rodar o programa
+# Default user, password and hosts,
+# if not defined, they will be prompted
 username = None  # "username"
 password = None  # "password"
 hosts = None     # ["hostname.no-ip.org", "otherhost.servegame.com"]
 
-
-# Detecta o ip atual
-try:
-	import no_ip_updater.getip as getip
-	ip = getip.get_ip()
-except:
-	ip = None 
 
 
 
@@ -25,10 +18,10 @@ def run():
 	import argparse
 	import getpass
 	
-	parser = argparse.ArgumentParser(description="Update hosts No-IP")
+	parser = argparse.ArgumentParser(description="Update No-IP hosts")
 	add_arg = parser.add_argument
-	add_arg("-u", "--username", action="store", dest="user",     type=str, help="No-IP username" )
-	add_arg("-p", "--password", action="store", dest="password", type=str, help="password of username (NOT RECOMMENDED)" )
+	add_arg("-u", "--username", action="store", dest="user",     type=str, help="No-IP account username" )
+	add_arg("-p", "--password", action="store", dest="password", type=str, help="account password (NOT RECOMMENDED)" )
 	add_arg("-i", "--ip",       action="store", dest="ip",       type=str, help="IP to send" )
 	add_arg("-f", "--file",     action="store", dest="file",    nargs="+", help="NOT IMPLEMENTED" )
 	add_arg("-host",            action="store", dest="host",    nargs="+", help="host(s) to update" )
@@ -38,47 +31,54 @@ def run():
 	global username
 	global password
 	global hosts
-	global ip
+	#global ip
 	
-	# Procura os parametros correspondentes para usuário e senha
+	# User and password parameters
 	if args.user:
 		if args.password:
 			username = args.user
 			password = args.password
 		else:
-			password = getpass.getpass()
+			password = ""
 			while not password:
-				password = getpass.getpass("")
+				password = getpass.getpass()
 			username = args.user
-	# Caso não, procura os padrões
+	# If not passed, prompt
 	elif not username:
-		username = raw_input("Username: ")
+		username = ""
 		while not username:
-			username = raw_input()
-		password = getpass.getpass()
+			username = raw_input("Username: ")
+		password = ""
 		while not password:
-			password = getpass.getpass("")
+			password = getpass.getpass()
 	
 	if not password:
-		password = getpass.getpass("Password for \"{}\": ".format(username))
+		password = ""
 		while not password:
-			password = getpass.getpass("")
+			password = getpass.getpass("Password for \"{}\": ".format(username))
 	
-	# O mesmo para os hosts
+	# Same for hosts
 	if args.host:
 		hosts = args.host
 	elif not hosts:
-		hosts = raw_input("hosts: ").split()
+		hosts = ""
 		while not hosts:
-			hosts = raw_input()
+			hosts = raw_input("hosts: ").split()
 	
-	# E para o ip
+	# And for IP
 	if args.ip:
 		ip = args.ip
-	elif not ip:
-		ip = raw_input("ip: ")
-		while not ip:
-			ip = raw_input()
+	else:
+		# Detects the current IP
+		try:
+			print "Detecting current IP..."
+			import no_ip_updater.getip as getip
+			ip = getip.get_ip()
+		except:
+			print "Can't detect current IP."
+			ip = ""
+			while not ip:
+				ip = raw_input("ip: ")
 	
 	print
 	print "=== No-IP Updater ==="

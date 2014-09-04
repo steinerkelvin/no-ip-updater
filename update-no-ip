@@ -22,7 +22,7 @@ def run():
 	add_arg = parser.add_argument
 	add_arg("-u", "--username", action="store", dest="user",     type=str, help="No-IP account username" )
 	add_arg("-p", "--password", action="store", dest="password", type=str, help="account password (NOT RECOMMENDED)" )
-	add_arg("-i", "--ip",       action="store", dest="ip",       type=str, help="IP to send" )
+	add_arg("-i", "--ip",       action="store", dest="ip",       type=str, help="new host IP" )
 	add_arg("-f", "--file",     action="store", dest="file",    nargs="+", help="NOT IMPLEMENTED" )
 	add_arg("-host",            action="store", dest="host",    nargs="+", help="host(s) to update" )
 	
@@ -55,7 +55,7 @@ def run():
 	if not password:
 		password = ""
 		while not password:
-			password = getpass.getpass("Password for \"{}\": ".format(username))
+			password = getpass.getpass("Password: ".format(username))
 	
 	# Same for hosts
 	if args.host:

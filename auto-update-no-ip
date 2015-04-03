@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+# coding: UTF-8
+
+import sys
+import netrc
+import no_ip_updater as noip
+import no_ip_updater.getip as getip
+
+
+'''
+This script automatically updates the specified hosts with the current IP.
+
+Add this lines to your ~/.netrc file, replacing <username> and <password> accordingly:
+
+machine no-ip.com
+  login <username>
+  password <password>
+
+'''
+
+
+# Hosts to update #
+
+hosts = [ "example.no-ip.org" ]
+
+
+
+if __name__ = "__main__":
+
+    HOST = "no-ip.com"
+    secrets = netrc.netrc()
+    username, account, password = secrets.authenticators( HOST )
+
+    print "\n=== No-IP Updater ==="
+    print "Detecting current IP..."
+
+    try:
+        ip = getip.get_ip()
+    except:
+        print "[ERROR] Can't detect current IP.\n"
+    else:
+        noip.updateHosts(username, password, ip, hosts)
+
+    print "=====================\n"
+

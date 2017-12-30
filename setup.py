@@ -9,5 +9,5 @@ setup(name='no-ip-updater',
 	  author='Kelvin Steiner',
 	  author_email='kelvinsteinersantos@gmail.com',
 	  packages=["no_ip_updater"],
-	  scripts = ["update-no-ip"]
+	  scripts = ["update-no-ip", "auto-update-no-ip"]
 	  )

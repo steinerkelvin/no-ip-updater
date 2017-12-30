@@ -3,43 +3,86 @@
 
 import sys
 import netrc
+import os.path
+
 import no_ip_updater as noip
 import no_ip_updater.getip as getip
 
 
 '''
-This script automatically updates the specified hosts with the current IP.
+This script automatically gets No-IP login from netrc file and updates the specified hosts with the current IP.
 
-Add this lines to your ~/.netrc file, replacing <username> and <password> accordingly:
+Add these lines to your ~/.netrc file, replacing <username> and <password> accordingly:
 
 machine no-ip.com
   login <username>
   password <password>
+
+Add each host to a ".no-ip-hosts" file inside your home directory, or hardcode the "hosts" variable inside this script.
 
 '''
 
 
 # Hosts to update #
 
-hosts = [ "example.no-ip.org" ]
+# hosts = [ "example.no-ip.org" ]
+hosts = []
+
+
+HOSTS_FILE = "$HOME/.no-ip-hosts"
 
 
 
-if __name__ = "__main__":
+
+if __name__ == "__main__":
 
     HOST = "no-ip.com"
-    secrets = netrc.netrc()
-    username, account, password = secrets.authenticators( HOST )
 
-    print "\n=== No-IP Updater ==="
-    print "Detecting current IP..."
+    try:
+        cred = netrc.netrc().authenticators( HOST )
+    except IOError as err:
+        #raise Exception("Can't access .netrc file", e)
+        print("Can't access .netrc file")
+        print(err)
+        sys.exit(1)
+    else:
+        if cred is not None:
+            username, account, password = cred
+        else:
+            #raise Exception("No login for \"{}\" host in .netrc file".format(HOST))
+            print("No login for \"{}\" host in .netrc file".format(HOST))
+            sys.exit(1)
+
+    fileName = os.path.expandvars(HOSTS_FILE)
+    try:
+        with open(fileName, 'r') as f_in:
+            lines = (line.strip() for line in f_in) # All lines including the blank ones
+            lines = (line for line in lines if line) # Non-blank lines
+    except IOError as err:
+        if not hosts:
+            #raise Exception("Can't access \"{}\" file".format(HOSTS_FILE), err)
+            print("Can't access \"{}\" file".format(HOSTS_FILE))
+            print(err)
+            sys.exit(1)
+        else:
+            print("WARNING: Can't access \"{}\" file")
+    else:
+        if lines:
+            hosts = lines
+        elif not hosts:
+            #raise Exception("No host found in \"{}\"".format(HOSTS_FILE))
+            print("No host found in \"{}\"".format(HOSTS_FILE))
+            sys.exit(1)
+
+
+    print("\n=== No-IP Updater ===")
+    print("Detecting current IP...")
 
     try:
         ip = getip.get_ip()
     except:
-        print "[ERROR] Can't detect current IP.\n"
+        print("[ERROR] Can't detect current IP.\n")
     else:
         noip.updateHosts(username, password, ip, hosts)
 
-    print "=====================\n"
-
+    print("=====================\n")

@@ -17,7 +17,7 @@ hosts = None     # ["hostname.no-ip.org", "otherhost.servegame.com"]
 def run():
 	import argparse
 	import getpass
-	
+
 	parser = argparse.ArgumentParser(description="Update No-IP hosts")
 	add_arg = parser.add_argument
 	add_arg("-u", "--username", action="store", dest="user",     type=str, help="No-IP account username" )
@@ -25,14 +25,14 @@ def run():
 	add_arg("-i", "--ip",       action="store", dest="ip",       type=str, help="new host IP" )
 	add_arg("-f", "--file",     action="store", dest="file",    nargs="+", help="NOT IMPLEMENTED" )
 	add_arg("-host",            action="store", dest="host",    nargs="+", help="host(s) to update" )
-	
+
 	args = parser.parse_args()
-	
+
 	global username
 	global password
 	global hosts
 	#global ip
-	
+
 	# User and password parameters
 	if args.user:
 		if args.password:
@@ -47,50 +47,49 @@ def run():
 	elif not username:
 		username = ""
 		while not username:
-			username = raw_input("Username: ")
+			username = input("Username: ")
 		password = ""
 		while not password:
 			password = getpass.getpass()
-	
+
 	if not password:
 		password = ""
 		while not password:
 			password = getpass.getpass("Password: ".format(username))
-	
+
 	# Same for hosts
 	if args.host:
 		hosts = args.host
 	elif not hosts:
 		hosts = ""
 		while not hosts:
-			hosts = raw_input("hosts: ").split()
-	
+			hosts = input("hosts: ").split()
+
 	# And for IP
 	if args.ip:
 		ip = args.ip
 	else:
 		# Detects the current IP
 		try:
-			print "Detecting current IP..."
+			print("Detecting current IP...")
 			import no_ip_updater.getip as getip
 			ip = getip.get_ip()
-		except:
-			print "Can't detect current IP."
+		except Exception as err:
+			print("Can't detect current IP.")
+			print(err)
+			raise err
 			ip = ""
 			while not ip:
-				ip = raw_input("ip: ")
-	
-	print
-	print "=== No-IP Updater ==="
-	
+				ip = input("ip: ")
+
+	print()
+	print("=== No-IP Updater ===")
+
 	noip.updateHosts(username, password, ip, hosts)
-	
-	print "====================="
-	print
-	
-	
+
+	print("=====================")
+	print()
+
+
 if __name__ == "__main__":
 	run()
-
-
-

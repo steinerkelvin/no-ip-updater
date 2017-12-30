@@ -1,4 +1,4 @@
 #!/usr/bin/env python
 # coding: UTF-8
 
-from noip import *
+from .noip import *

@@ -44,15 +44,14 @@ def update(username, password, host, ip, https=True):
 
 # Messages displayed according to the No-IP server response
 messages = {
-		"good":    "[SUCESS] Host atualizado com sucesso.",
-		"nochg":   "[SUCESS] O Host já está atualizado.",
-		"nohost":  "[ERROR] O Host fornecido não existe.",
-		"badauth": "[ERROR] Combinação de usuário e senha inválida.",
-		"badagent":"[ERROR] \"Cliente desativado\"", # Não sei o significado :(
-		"!donator":"[ERROR] A solicitação de update foi enviada com"+
-			" um recurso que está indisponível para o usuário especificado.",
-		"abuse":   "[ERROR] O usuário está bloqueado.",
-		"911":     "[ERROR] Um erro fatal aconteceu."
+		"good":    "[SUCSESS] Host updated sucsessfully.",
+		"nochg":   "[SUCSESS] No update needed to host.",
+		"nohost":  "[ERROR] Host doesn't exist.",
+		"badauth": "[ERROR] Username or password is invalid.",
+		"badagent":"[ERROR] Client disabled. Client should exit and not perform any more updates without user intervention.", 
+		"!donator":"[ERROR] An update request was sent including a feature that is not available to that particular user such as offline options.",
+		"abuse":   "[ERROR] Username is blocked due to abuse.",
+		"911":     "[ERROR] A fatal error on our side such as a database outage. Retry the update no sooner than 30 minutes"
 		}
 
 def get_response(response):

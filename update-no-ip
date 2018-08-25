@@ -31,7 +31,6 @@ def run():
 	global username
 	global password
 	global hosts
-	#global ip
 
 	# User and password parameters
 	if args.user:

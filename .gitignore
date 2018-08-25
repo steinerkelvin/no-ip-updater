@@ -34,7 +34,11 @@ nosetests.xml
 .project
 .pydevproject
 
+# VS Code
+.vscode
+
 
 # System generated
 .directory
 *~
+

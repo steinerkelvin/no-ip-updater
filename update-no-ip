@@ -1,18 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: UTF-8
 
 import sys
 import no_ip_updater as noip
-
-
-# Default user, password and hosts,
-# if not defined, they will be prompted
-username = None  # "username"
-password = None  # "password"
-hosts = None     # ["hostname.no-ip.org", "otherhost.servegame.com"]
-
-
-
 
 def run():
 	import argparse
@@ -28,46 +18,25 @@ def run():
 
 	args = parser.parse_args()
 
-	global username
-	global password
-	global hosts
+	username = args.user
+	password = args.password
+	hosts = args.host
+	ip = args.ip
 
-	# User and password parameters
-	if args.user:
-		if args.password:
-			username = args.user
-			password = args.password
-		else:
-			password = ""
-			while not password:
-				password = getpass.getpass()
-			username = args.user
-	# If not passed, prompt
-	elif not username:
-		username = ""
+	if not username:
 		while not username:
 			username = input("Username: ")
-		password = ""
-		while not password:
-			password = getpass.getpass()
 
 	if not password:
-		password = ""
 		while not password:
-			password = getpass.getpass("Password: ".format(username))
+			password = getpass.getpass("Password: ")
 
-	# Same for hosts
-	if args.host:
-		hosts = args.host
-	elif not hosts:
-		hosts = ""
+	if not hosts:
 		while not hosts:
-			hosts = input("hosts: ").split()
+			hostsStr = input("hosts: ")
+			hosts = hostsStr.split()
 
-	# And for IP
-	if args.ip:
-		ip = args.ip
-	else:
+	if not ip:
 		# Detects the current IP
 		try:
 			print("Detecting current IP...")
@@ -76,19 +45,11 @@ def run():
 		except Exception as err:
 			print("Can't detect current IP.")
 			print(err)
-			raise err
-			ip = ""
 			while not ip:
 				ip = input("ip: ")
 
-	print()
-	print("=== No-IP Updater ===")
-
+	print("ip: {}".format(ip))
 	noip.updateHosts(username, password, ip, hosts)
-
-	print("=====================")
-	print()
-
 
 if __name__ == "__main__":
 	run()

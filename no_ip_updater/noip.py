@@ -7,11 +7,8 @@ import urllib.request, urllib.error, urllib.parse
 
 import logging
 
-
 urlbase = "http://dynupdate.no-ip.com/nic/update?hostname={2}&myip={3}"
 urlbase_https = "https://dynupdate.no-ip.com/nic/update?hostname={2}&myip={3}"
-
-
 
 def update(username, password, host, ip, https=True):
 	"""
@@ -32,9 +29,9 @@ def update(username, password, host, ip, https=True):
 
 	try:
 		res = urllib.request.urlopen(req)
-	except urllib.error.HTTPError:
-		logging.error("authentication error")
-		exit(2)
+	except urllib.error.HTTPError as err:
+		# logging.error(err)
+		raise err
 
 	# Returns the server response
 	return res.read()
@@ -67,8 +64,6 @@ def updateHosts(username, password, ip, hosts, https=True):
 	Updates one or more hosts, printing corresponding messages.
 	"""
 
-	print("ip: {}".format(ip))
-
 	# If multiple hosts
 	if type(hosts) in (list, tuple):
 		for host in hosts:
@@ -81,4 +76,3 @@ def updateHosts(username, password, ip, hosts, https=True):
 		print("host: {}".format(hosts))
 		resp = update(username, password, hosts, ip, https )
 		print(get_response(resp))
-

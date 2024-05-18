@@ -25,3 +25,7 @@ You can define in the script, a default user name, host, and even a password (no
 If not defined, the password will be prompted.
 If the IP is not passed on the command line, it will use the current IP.
 
+---
+
+[Note about some alternatives](https://github.com/steinerkelvin/no-ip-updater/issues/2#issuecomment-2012397753),
+as No-IP requires periodic manual action to keep your domains. (We are not going to implement auto-renewal here).
